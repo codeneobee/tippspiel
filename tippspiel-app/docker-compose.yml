@@ -1,0 +1,17 @@
+version: '3.1'
+secrets: 
+    mongo_password:
+        file: mongo_password.txt
+services:
+    db:
+        image: 'mongo'
+        container_name: 'tippspiel-db'
+        secrets:
+            - mongo_password
+        environment:
+            - MONGO_INITDB_ROOT_USERNAME=root
+            - MONGO_INITDB_ROOT_PASSWORD_FILE=/run/secrets/mongo_password
+        ports:
+            - 27017:27017
+            - 27018:27018
+            - 27019:27019

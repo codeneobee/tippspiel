@@ -1,0 +1,10 @@
+# dependencies 
+node_modules
+build
+npm-debug.log
+.env
+.DS_Store
+
+#mongo user and password files
+mongo_user.txt
+mongo_password.txt
