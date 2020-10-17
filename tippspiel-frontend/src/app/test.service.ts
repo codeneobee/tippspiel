@@ -11,6 +11,6 @@ export class TestService {
   }
 
   getTest(): Observable<any> {
-    return this.http.get('/api');
+    return this.http.get('/api/v1');
   }
 }

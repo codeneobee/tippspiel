@@ -1,19 +1,14 @@
 import express = require('express');
-import util = require('util')
-import cors = require('cors')
-import { createDatabase } from './database';
+import {createDatabase} from './database';
+import {router} from './routes'
 
 main();
 
 async function main() {
-    createDatabase();
-    
-    const app: express.Application = express();
-    app.use(cors());
+    await createDatabase();
 
-    app.get('/', async (req, res) =>  {
-        res.send('Hello World')
-    });
+    const app: express.Application = express();
+    app.use('/v1', router)
     
     app.listen(3000, () => {
         console.log('Example app listening on port 3000');
