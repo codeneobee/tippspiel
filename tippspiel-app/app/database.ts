@@ -1,21 +1,46 @@
-import mongoose = require("mongoose");
-import fs = require("fs");
+import mongoose from "mongoose"
+import * as fs from "fs";
 
-export async function createDatabase() {
-    const rootUser = "root";
-    const rootPass = fs.readFileSync("mongo_password.txt", "utf-8");
-    
-    const mongodb = "mongodb://127.0.0.1/tippspiel-db";
-    const options = {
-      user: rootUser,
-      pass: rootPass,
-      authSource: "admin",
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    };
-    
-    await mongoose.connect(mongodb, options);
-    
-    const db = mongoose.connection;
-    db.on("error", console.error.bind(console, "MongoDB connection error:"));    
+const globalAny: any = global
+
+async function connect() {
+    if (mongoose.connection.readyState === 0) {
+
+        await mongoose.connect(
+            process.env.NODE_ENV === 'test' ? globalAny.__DB_URL__ : process.env.DB_URL,
+            {
+                user: process.env.NODE_ENV === 'test' ? '' : "root",
+                pass: process.env.NODE_ENV === 'test' ? '' : fs.readFileSync("mongo_password.txt", "utf-8"),
+                authSource: "admin",
+                useNewUrlParser: true,
+                useCreateIndex: true,
+                useFindAndModify: false,
+                useUnifiedTopology: true,
+            }
+        );
+    }
 }
+
+async function truncate() {
+    if (mongoose.connection.readyState !== 0) {
+        const {collections} = mongoose.connection;
+
+        const promises = Object.keys(collections).map(collection =>
+            mongoose.connection.collection(collection).deleteMany({})
+        );
+
+        await Promise.all(promises);
+    }
+};
+
+async function disconnect() {
+    if (mongoose.connection.readyState !== 0) {
+        await mongoose.disconnect();
+    }
+};
+
+export {
+    connect,
+    truncate,
+    disconnect
+};

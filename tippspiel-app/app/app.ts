@@ -1,17 +1,32 @@
-import express = require('express');
-import {createDatabase} from './database';
-import {router} from './routes'
+import dotenv from 'dotenv'
+import express, {Express} from 'express'
+import bodyParser from "body-parser";
+import {Routes} from "./routes";
+import * as databaseHelper from "./database"
+dotenv.config()
 
-main();
+class App {
 
-async function main() {
-    await createDatabase();
+    public express: Express;
+    constructor() {
+        this.express = express()
+        this.database();
+        this.middlewares();
+        this.routes();
+    }
 
-    const app: express.Application = express();
-    app.use('/v1', router)
-    
-    app.listen(3000, () => {
-        console.log('Example app listening on port 3000');
-    })
+    private database() {
+        databaseHelper.connect()
+    }
+
+    private middlewares() {
+        this.express.use(bodyParser.urlencoded({extended: false}));
+        this.express.use(bodyParser.json());
+    }
+
+    private routes() {
+        this.express.use('/v1', Routes);
+    }
 }
 
+export const app = new App().express

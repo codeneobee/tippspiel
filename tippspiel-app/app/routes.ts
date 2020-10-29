@@ -1,13 +1,8 @@
-import {Response} from "express";
-import {TestController} from "./controllers/test.controller"
+import express from "express";
+import {userRoutes} from "./users/users.routes";
 
-const express = require('express');
-const router = express.Router();
+const Routes = express.Router();
 
-router.get('/', (request: Request, response: Response) => {
-    TestController.fetchTest().then((result) => {
-        response.send(result)
-    })
-});
+Routes.use('/users', userRoutes)
 
-export {router}
+export {Routes}

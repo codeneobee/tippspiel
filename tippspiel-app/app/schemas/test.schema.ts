@@ -1,12 +1,18 @@
 import {Document, model, Schema} from "mongoose";
 
-interface ITest extends Document {
-    name: string
+export class Test {
+    constructor(
+        public name: string
+    ) {
+    }
 }
+
+export interface TestDocument extends Test, Document {
+}
+
 
 const TestSchema = new Schema({
     name: String
 })
 
-const Test = model<ITest>('Test', TestSchema);
-export {Test}
+export const Tests = model<TestDocument>('Tests', TestSchema);
