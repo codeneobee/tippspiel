@@ -5,6 +5,9 @@ npm-debug.log
 .env
 .DS_Store
 
-#mongo user and password files
+# mongo user and password files
 mongo_user.txt
 mongo_password.txt
+
+# JWT private key file
+jwt_private_key.txt

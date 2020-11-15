@@ -1,7 +1,10 @@
 import express from 'express'
 import {passport} from "../passport";
 import jwt from 'jsonwebtoken';
+import * as fs from "fs";
+import path from "path";
 
+export const JWT_PRIVATE_KEY = process.env.NODE_ENV === 'test' ? 'TOP_SECRET' : fs.readFileSync(path.join(__dirname, '../jwt_private_key.txt'), 'utf-8');
 const userRoutes = express.Router()
 
 userRoutes.post('/', passport.authenticate('signup', {session: false}),
@@ -22,7 +25,7 @@ userRoutes.post('/login', async (req, res, next) => {
                 if (error) return next(error);
 
                 const body = {_id: user._id, email: user.email}
-                const token = jwt.sign({user: body}, 'TOP_SECRET');
+                const token = jwt.sign({user: body}, JWT_PRIVATE_KEY);
 
                 return res.json({message: 'Login successful', token});
             });

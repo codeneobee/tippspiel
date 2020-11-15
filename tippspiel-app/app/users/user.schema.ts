@@ -16,7 +16,7 @@ const UserSchema = new Schema({
     password: {type: String, required: true}
 });
 
-UserSchema.pre('save', async function (next) {
+UserSchema.pre<UserDocument>('save', async function (next) {
     this.password  = await bcrypt.hash(this.password, 10);
     next();
 })

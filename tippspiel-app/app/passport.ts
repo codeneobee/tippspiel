@@ -2,6 +2,7 @@ import passport from "passport";
 import {Users} from "./users/user.schema";
 import LocalStrategy from 'passport-local';
 import JWT from 'passport-jwt';
+import {JWT_PRIVATE_KEY} from "./users/users.routes";
 
 passport.use('signup', new LocalStrategy.Strategy({
         usernameField: 'email',
@@ -38,8 +39,8 @@ passport.use('login', new LocalStrategy.Strategy({
 }));
 
 passport.use('jwt', new JWT.Strategy({
-        secretOrKey: 'TOP_SECRET',
-        jwtFromRequest: JWT.ExtractJwt.fromUrlQueryParameter('secret_token')
+        secretOrKey: JWT_PRIVATE_KEY,
+        jwtFromRequest: JWT.ExtractJwt.fromAuthHeaderAsBearerToken()
     },
     async (token, done) => {
         try {
