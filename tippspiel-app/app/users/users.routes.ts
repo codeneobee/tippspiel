@@ -1,49 +1,35 @@
 import express from 'express'
-import {auth} from "../auth";
-import {UserDocument, Users} from './user.schema';
 import {passport} from "../passport";
-import {UsersController} from "./users.controller";
-import {CreateUsersRequest} from "./create-users-request";
+import jwt from 'jsonwebtoken';
 
 const userRoutes = express.Router()
 
-userRoutes.post('/', auth.optional, (req, res) => {
-    return UsersController.createUser(req, res);
-});
+userRoutes.post('/', passport.authenticate('signup', {session: false}),
+    async (req, res) => {
+        res.status(201).json({message: 'Signup successful', user: req.user});
+    }
+);
 
-userRoutes.post('/login', auth.optional, (req, res, next) => {
-    // const user = req.body.user as CreateUsersRequest;
-    //
-    // const errorObject = user.validate();
-    // if (errorObject.errors) return res.status(422).json(errorObject);
-    //
-    // return passport.authenticate('local', {session: false}, (err, passportUser) => {
-    //     if (err) {
-    //         return next(err);
-    //     }
-    //
-    //     if (passportUser) {
-    //         const user = passportUser;
-    //         user.token = passportUser.generateJWT();
-    //
-    //         return res.json({user: user.toAuthJSON()});
-    //     }
-    //
-    //     return res.sendStatus(400);
-    // })(req, res, next);
-});
-
-userRoutes.get('/current', auth.required, (req: any, res, next) => {
-    const id = req.payload.id;
-
-    return Users.findById(id)
-        .then((user) => {
-            if (!user) {
-                return res.sendStatus(400);
+userRoutes.post('/login', async (req, res, next) => {
+    passport.authenticate('login', async (err, user) => {
+        try {
+            if (err || !user) {
+                const error = new Error('An error occurred');
+                return next(error);
             }
 
-            return res.json({user: user.toAuthJSON()});
-        });
+            req.login(user, {session: false}, async (error) => {
+                if (error) return next(error);
+
+                const body = {_id: user._id, email: user.email}
+                const token = jwt.sign({user: body}, 'TOP_SECRET');
+
+                return res.json({message: 'Login successful', token});
+            });
+        } catch (error) {
+            return next(error);
+        }
+    })(req, res, next);
 });
 
 export {userRoutes}

@@ -1,24 +1,51 @@
 import passport from "passport";
 import {Users} from "./users/user.schema";
+import LocalStrategy from 'passport-local';
+import JWT from 'passport-jwt';
 
-const LocalStrategy = require('passport-local');
+passport.use('signup', new LocalStrategy.Strategy({
+        usernameField: 'email',
+        passwordField: 'password'
+    },
+    async (email, password, done) => {
+        try {
+            const user = await Users.create({email, password});
+            return done(null, user)
+        } catch (error) {
+            done(error);
+        }
+    }));
 
-passport.use(new LocalStrategy({
-    usernameField: 'user[email]',
-    passwordField: 'user[password]'
-}, (email: string, password: string, done: Function) => {
-    Users.findOne({email})
-        .then((user) => {
-            if (!user || !user.validatePassword(password)) {
-                return done(null, false, {
-                    errors: {
-                        'email or password': 'is invalid'
-                    }
-                });
-            }
+passport.use('login', new LocalStrategy.Strategy({
+    usernameField: 'email',
+    passwordField: 'password'
+}, async (email, password, done) => {
+    try {
+        const user = await Users.findOne({email});
 
-            return done(null, user);
-        }).catch(done());
+        if (!user) {
+            return done(null, false, {message: 'Email is incorrect'})
+        }
+
+        const validate = await user.isValidPassword(password);
+        if (!validate) {
+            return done(null, false, {message: 'Password is incorrect'})
+        }
+        return done(null, user, {message: 'Login successful'});
+    } catch (error) {
+        return done(error);
+    }
 }));
 
+passport.use('jwt', new JWT.Strategy({
+        secretOrKey: 'TOP_SECRET',
+        jwtFromRequest: JWT.ExtractJwt.fromUrlQueryParameter('secret_token')
+    },
+    async (token, done) => {
+        try {
+            return done(null, token.user)
+        } catch (error) {
+            done(error);
+        }
+    }))
 export {passport}
