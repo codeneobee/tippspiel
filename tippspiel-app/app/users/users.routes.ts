@@ -14,7 +14,7 @@ userRoutes.post('/login', async (req, res, next) => {
     passport.authenticate('login', async (err, user) => {
         try {
             if (err || !user) {
-                return res.status(400).send({message: err.message})
+                return res.status(401).send({message: err.message})
             }
 
             req.login(user, {session: false}, async (error) => {

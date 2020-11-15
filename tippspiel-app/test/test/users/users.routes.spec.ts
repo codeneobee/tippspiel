@@ -71,7 +71,7 @@ describe('UserRoutes', () => {
                 .post('/v1/users/login')
                 .send({email, password});
 
-            expect(response.status).toBe(400)
+            expect(response.status).toBe(401)
             expect(response.body.message).toBe('Password is incorrect')
         });
         it('should return error if email is false', async () => {
@@ -82,7 +82,7 @@ describe('UserRoutes', () => {
                 .post('/v1/users/login')
                 .send({email, password});
 
-            expect(response.status).toBe(400)
+            expect(response.status).toBe(401)
             expect(response.body.message).toBe('Email is incorrect')
         });
     })
