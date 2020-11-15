@@ -1,19 +1,25 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {AppComponent} from './app.component';
+import {RouterModule} from '@angular/router';
+import {LoginComponent} from './components/login/login.component';
+import {LoginModule} from './components/login/login.module';
 
-import { AppComponent } from './app.component';
-import { TestComponent } from './test/test.component';
-import { TestModule } from './test/test.module';
+export const routes = [
+  {path: '', component: LoginComponent}
+];
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
-    TestModule
+    RouterModule.forRoot(routes),
+    LoginModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
