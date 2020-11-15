@@ -43,24 +43,47 @@ describe('UserRoutes', () => {
     });
 
     describe('POST /users/login', () => {
-        it('should return token for valid user', async () => {
+        beforeEach(async () => {
             const user: User = {
                 email: 'test@test.com',
                 password: 'testP4ssword'
             }
             await new Users(user).save();
+        });
 
+        it('should return token for valid user', async () => {
+            const email = 'test@test.com';
+            const password = 'testP4ssword';
             const response = await request
                 .post('/v1/users/login')
-                .send(user);
+                .send({email, password});
 
-            const savedUsers = await Users.find({email: user.email}).exec();
 
-            expect(savedUsers).toHaveLength(1)
             expect(response.status).toEqual(200);
             expect(response.body.message).toEqual('Login successful');
             expect(response.body.token).not.toBeFalsy()
+        });
+        it('should return error if password is false', async () => {
+            const email = 'test@test.com';
+            const password = 'wrongP4ssword';
 
+            const response = await request
+                .post('/v1/users/login')
+                .send({email, password});
+
+            expect(response.status).toBe(400)
+            expect(response.body.message).toBe('Password is incorrect')
+        });
+        it('should return error if email is false', async () => {
+            const email = 'wrong@test.com';
+            const password = 'testP4ssword';
+
+            const response = await request
+                .post('/v1/users/login')
+                .send({email, password});
+
+            expect(response.status).toBe(400)
+            expect(response.body.message).toBe('Email is incorrect')
         });
     })
 });

@@ -1,8 +1,6 @@
 import express from 'express'
 import {JWT_PRIVATE_KEY, passport} from "../passport";
 import jwt from 'jsonwebtoken';
-import * as fs from "fs";
-import path from "path";
 
 const userRoutes = express.Router()
 
@@ -16,8 +14,7 @@ userRoutes.post('/login', async (req, res, next) => {
     passport.authenticate('login', async (err, user) => {
         try {
             if (err || !user) {
-                const error = new Error('An error occurred');
-                return next(error);
+                return res.status(400).send({message: err.message})
             }
 
             req.login(user, {session: false}, async (error) => {

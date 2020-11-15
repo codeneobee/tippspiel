@@ -5,7 +5,7 @@ import JWT from 'passport-jwt';
 import fs from "fs";
 import path from "path";
 
-export const JWT_PRIVATE_KEY = process.env.NODE_ENV === 'test' ? 'TOP_SECRET' : fs.readFileSync(path.join(__dirname, '../jwt_private_key.txt'), 'utf-8');
+export const JWT_PRIVATE_KEY = process.env.NODE_ENV === 'test' ? 'TOP_SECRET' : fs.readFileSync(path.join(__dirname, '../../jwt_private_key.txt'), 'utf-8');
 
 passport.use('signup', new LocalStrategy.Strategy({
         usernameField: 'email',
@@ -28,12 +28,12 @@ passport.use('login', new LocalStrategy.Strategy({
         const user = await Users.findOne({email});
 
         if (!user) {
-            return done(null, false, {message: 'Email is incorrect'})
+            return done(new Error('Email is incorrect'), false)
         }
 
         const validate = await user.isValidPassword(password);
         if (!validate) {
-            return done(null, false, {message: 'Password is incorrect'})
+            return done(new Error('Password is incorrect'), false)
         }
         return done(null, user, {message: 'Login successful'});
     } catch (error) {
