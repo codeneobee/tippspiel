@@ -8,10 +8,10 @@ async function connect() {
     if (mongoose.connection.readyState === 0) {
 
         await mongoose.connect(
-            process.env.NODE_ENV === 'test' ? globalAny.__DB_URL__ : process.env.DB_URL,
+            process.env.DB_URL ? process.env.DB_URL : '',
             {
-                user: process.env.NODE_ENV === 'test' ? '' : "root",
-                pass: process.env.NODE_ENV === 'test' ? '' : fs.readFileSync(path.join(__dirname, "mongo_password.txt"), "utf-8"),
+                user: "root",
+                pass: fs.readFileSync(path.join(__dirname, "../../mongo_password.txt"), "utf-8"),
                 authSource: "admin",
                 useNewUrlParser: true,
                 useCreateIndex: true,

@@ -2,7 +2,10 @@ import passport from "passport";
 import {Users} from "./users/user.schema";
 import LocalStrategy from 'passport-local';
 import JWT from 'passport-jwt';
-import {JWT_PRIVATE_KEY} from "./users/users.routes";
+import fs from "fs";
+import path from "path";
+
+export const JWT_PRIVATE_KEY = process.env.NODE_ENV === 'test' ? 'TOP_SECRET' : fs.readFileSync(path.join(__dirname, '../jwt_private_key.txt'), 'utf-8');
 
 passport.use('signup', new LocalStrategy.Strategy({
         usernameField: 'email',

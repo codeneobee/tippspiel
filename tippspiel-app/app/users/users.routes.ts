@@ -1,10 +1,9 @@
 import express from 'express'
-import {passport} from "../passport";
+import {JWT_PRIVATE_KEY, passport} from "../passport";
 import jwt from 'jsonwebtoken';
 import * as fs from "fs";
 import path from "path";
 
-export const JWT_PRIVATE_KEY = process.env.NODE_ENV === 'test' ? 'TOP_SECRET' : fs.readFileSync(path.join(__dirname, '../jwt_private_key.txt'), 'utf-8');
 const userRoutes = express.Router()
 
 userRoutes.post('/', passport.authenticate('signup', {session: false}),
