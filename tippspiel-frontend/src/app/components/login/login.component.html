@@ -1,11 +1,22 @@
-<form [formGroup]="loginForm" (ngSubmit)="login()">
-
-  <label for="email-input">Email</label>
-  <input id="email-input" formControlName="email"/>
-  <label for="password-input">Password</label>
-  <input id="password-input" type="password" formControlName="password"/>
-
-
-  <button id="login-button" type="submit">Submit</button>
-</form>
-<p>Login works</p>
+<div class="flex-container-center">
+  <div class="grid">
+    <h3 *ngIf="!showRegisterForm" class="whole-width">Login</h3>
+    <h3 *ngIf="showRegisterForm" class="whole-width">Registrieren</h3>
+    <form class="display-content" *ngIf="!showRegisterForm" [formGroup]="loginForm" (ngSubmit)="login()"
+          id="login-form">
+      <label for="email-input">Email</label>
+      <input id="email-input" formControlName="email"/>
+      <label for="password-input">Passwort</label>
+      <input id="password-input" type="password" formControlName="password"/>
+      <button class="whole-width" id="login-button" type="submit">Submit</button>
+    </form>
+    <form class="display-content" *ngIf="showRegisterForm" [formGroup]="registerForm" id="register-form" (ngSubmit)="register()">
+      <label for="register-email-input">Email</label>
+      <input id="register-email-input" formControlName="email"/>
+      <label for="register-password-input">Passwort</label>
+      <input id="register-password-input" type="password" formControlName="password"/>
+      <button class="whole-width" id="register-button" type="submit">Register</button>
+    </form>
+    <a *ngIf="!showRegisterForm" class="whole-width" id="switch-register-button" (click)="showRegisterForm = !showRegisterForm">Noch kein Account? Registrieren</a>
+  </div>
+</div>

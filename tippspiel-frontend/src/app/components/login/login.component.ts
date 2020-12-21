@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {AuthService} from '../../services/auth/auth.service';
 
@@ -13,14 +13,24 @@ export class LoginComponent implements OnInit {
     password: new FormControl('')
   });
 
+  showRegisterForm = false;
+  registerForm = new FormGroup({
+    email:  new FormControl(''),
+    password: new FormControl('')
+  });
+
   constructor(
     private authService: AuthService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
   }
 
   login(): void {
-    this.authService.login(this.loginForm.controls.email.value, this.loginForm.controls.password.value)
+    this.authService.login(this.loginForm.controls.email.value, this.loginForm.controls.password.value);
+  }
+
+  register(): void {
+    this.authService.register(this.registerForm.controls.email.value, this.registerForm.controls.password.value);
   }
 }

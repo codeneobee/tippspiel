@@ -1,0 +1,24 @@
+.flex-container-center {
+  display: flex;
+  justify-content: center;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 2fr 2fr;
+  grid-row-gap: 1.5rem;
+}
+
+.display-content {
+  display: contents;
+}
+
+.whole-width {
+  display: flex;
+  justify-content: center;
+  grid-column: 1/3;
+}
+
+a {
+  cursor: pointer;
+}
