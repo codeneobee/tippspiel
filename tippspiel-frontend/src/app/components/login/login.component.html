@@ -1,22 +1,23 @@
 <div class="flex-container-center">
   <div class="grid">
-    <h3 *ngIf="!showRegisterForm" class="whole-width">Login</h3>
-    <h3 *ngIf="showRegisterForm" class="whole-width">Registrieren</h3>
-    <form class="display-content" *ngIf="!showRegisterForm" [formGroup]="loginForm" (ngSubmit)="login()"
-          id="login-form">
-      <label for="email-input">Email</label>
-      <input id="email-input" formControlName="email"/>
-      <label for="password-input">Passwort</label>
-      <input id="password-input" type="password" formControlName="password"/>
-      <button class="whole-width" id="login-button" type="submit">Submit</button>
+    <form class="display-content" *ngIf="showLoginForm" [formGroup]="loginForm" (ngSubmit)="login()" id="login-form">
+      <h2 class="justify-content-center">Login</h2>
+      <input id="email-input" placeholder="Email-Adresse" formControlName="email" />
+      <input id="password-input" placeholder="Passwort" type="password" formControlName="password" />
+      <button id="login-button" type="submit">Submit</button>
     </form>
-    <form class="display-content" *ngIf="showRegisterForm" [formGroup]="registerForm" id="register-form" (ngSubmit)="register()">
-      <label for="register-email-input">Email</label>
-      <input id="register-email-input" formControlName="email"/>
-      <label for="register-password-input">Passwort</label>
-      <input id="register-password-input" type="password" formControlName="password"/>
-      <button class="whole-width" id="register-button" type="submit">Register</button>
+    <form class="display-content" *ngIf="showRegisterForm" [formGroup]="registerForm" id="register-form"
+      (ngSubmit)="register()">
+      <h2 class="justify-content-center">Registrieren</h2>
+      <input id="register-email-input" placeholder="Email-Adresse" formControlName="email" />
+      <input id="register-password-input" type="password" formControlName="password" placeholder="Passwort" />
+      <button id="register-button" type="submit">Register</button>
     </form>
-    <a *ngIf="!showRegisterForm" class="whole-width" id="switch-register-button" (click)="showRegisterForm = !showRegisterForm">Noch kein Account? Registrieren</a>
+    <button *ngIf="!showLoginForm && !showRegisterForm" id="switch-login-button" (click)="showLoginForm = true">
+      Login
+    </button>
+    <button *ngIf="!showRegisterForm && !showLoginForm" id="switch-register-button" (click)="showRegisterForm = true">
+      Registrieren
+    </button>
   </div>
 </div>

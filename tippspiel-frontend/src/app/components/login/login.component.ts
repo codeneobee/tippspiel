@@ -13,11 +13,12 @@ export class LoginComponent implements OnInit {
     password: new FormControl('')
   });
 
-  showRegisterForm = false;
   registerForm = new FormGroup({
     email:  new FormControl(''),
     password: new FormControl('')
   });
+  showRegisterForm = false;
+  showLoginForm = false;
 
   constructor(
     private authService: AuthService

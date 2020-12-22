@@ -24,56 +24,71 @@ describe('LoginComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should call login service with values defined in form', () => {
-    jest.spyOn(authService, 'login').mockReturnThis();
-    const loginField = fixture.nativeElement.querySelector('#email-input');
-    loginField.value = 'User';
-    loginField.dispatchEvent(new Event('input'));
 
-    const passwordField = fixture.nativeElement.querySelector('#password-input');
-    passwordField.value = 'P4ssword';
-    passwordField.dispatchEvent(new Event('input'));
-    fixture.detectChanges();
+  describe('LoginForm', () => {
+    it('should call login service with values defined in login form', () => {
+      component.showLoginForm = true;
+      fixture.detectChanges();
 
-    const loginButton = fixture.nativeElement.querySelector('#login-button');
-    loginButton.click();
-    fixture.detectChanges();
+      jest.spyOn(authService, 'login').mockReturnThis();
+      const loginField = fixture.nativeElement.querySelector('#email-input');
+      loginField.value = 'User';
+      loginField.dispatchEvent(new Event('input'));
+  
+      const passwordField = fixture.nativeElement.querySelector('#password-input');
+      passwordField.value = 'P4ssword';
+      passwordField.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+  
+      const loginButton = fixture.nativeElement.querySelector('#login-button');
+      loginButton.click();
+      fixture.detectChanges();
+  
+      expect(authService.login).toHaveBeenCalledWith('User', 'P4ssword');
+    });
+  
+    it('should switch to login form if login button on home page is clicked', () => {
+      let loginForm = fixture.nativeElement.querySelector('#login-form')
+      expect(loginForm).toBeNull();
+      const registerButton: HTMLButtonElement = fixture.nativeElement.querySelector('#switch-login-button');
+      registerButton.click();
+      fixture.detectChanges();
+  
+      loginForm = fixture.nativeElement.querySelector('#login-form')
+      expect(loginForm).not.toBeNull();
+    });
+  })
 
-    expect(authService.login).toHaveBeenCalledWith('User', 'P4ssword');
-  });
+  describe('RegisterForm', () => {
+    it('should call login service register with values defined in form', () => {
+      component.showRegisterForm = true;
+      fixture.detectChanges();
+      jest.spyOn(authService, 'register').mockReturnThis();
+      const loginField = fixture.nativeElement.querySelector('#register-email-input');
+      loginField.value = 'User';
+      loginField.dispatchEvent(new Event('input'));
+  
+      const passwordField = fixture.nativeElement.querySelector('#register-password-input');
+      passwordField.value = 'P4ssword';
+      passwordField.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+  
+      const loginButton = fixture.nativeElement.querySelector('#register-button');
+      loginButton.click();
+      fixture.detectChanges();
+  
+      expect(authService.register).toHaveBeenCalledWith('User', 'P4ssword');
+    });
+  })
 
   it('should switch to register form if register register button is clicked', () => {
     let registerForm = fixture.nativeElement.querySelector('#register-form');
-    let loginForm = fixture.nativeElement.querySelector('#login-form')
     expect(registerForm).toBeNull();
-    expect(loginForm).not.toBeNull();
     const registerButton: HTMLButtonElement = fixture.nativeElement.querySelector('#switch-register-button');
     registerButton.click();
     fixture.detectChanges();
 
     registerForm = fixture.nativeElement.querySelector('#register-form');
-    loginForm = fixture.nativeElement.querySelector('#login-form')
     expect(registerForm).not.toBeNull();
-    expect(loginForm).toBeNull();
-  });
-
-  it('should call login service register with values defined in form', () => {
-    component.showRegisterForm = true;
-    fixture.detectChanges();
-    jest.spyOn(authService, 'register').mockReturnThis();
-    const loginField = fixture.nativeElement.querySelector('#register-email-input');
-    loginField.value = 'User';
-    loginField.dispatchEvent(new Event('input'));
-
-    const passwordField = fixture.nativeElement.querySelector('#register-password-input');
-    passwordField.value = 'P4ssword';
-    passwordField.dispatchEvent(new Event('input'));
-    fixture.detectChanges();
-
-    const loginButton = fixture.nativeElement.querySelector('#register-button');
-    loginButton.click();
-    fixture.detectChanges();
-
-    expect(authService.register).toHaveBeenCalledWith('User', 'P4ssword');
   });
 });
