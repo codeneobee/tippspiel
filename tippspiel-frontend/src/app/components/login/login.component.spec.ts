@@ -4,6 +4,7 @@ import {AuthService} from '../../services/auth/auth.service';
 import {jest} from '@jest/globals';
 import {LoginModule} from './login.module';
 import {HttpClientModule} from '@angular/common/http';
+import { EMPTY } from 'rxjs';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -30,7 +31,7 @@ describe('LoginComponent', () => {
       component.showLoginForm = true;
       fixture.detectChanges();
 
-      jest.spyOn(authService, 'login').mockReturnThis();
+      jest.spyOn(authService, 'login').mockReturnValue(EMPTY);
       const loginField = fixture.nativeElement.querySelector('#email-input');
       loginField.value = 'User';
       loginField.dispatchEvent(new Event('input'));
@@ -63,7 +64,7 @@ describe('LoginComponent', () => {
     it('should call login service register with values defined in form', () => {
       component.showRegisterForm = true;
       fixture.detectChanges();
-      jest.spyOn(authService, 'register').mockReturnThis();
+      jest.spyOn(authService, 'register').mockReturnValue(EMPTY);
       const loginField = fixture.nativeElement.querySelector('#register-email-input');
       loginField.value = 'User';
       loginField.dispatchEvent(new Event('input'));

@@ -28,10 +28,10 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
-    this.authService.login(this.loginForm.controls.email.value, this.loginForm.controls.password.value);
+    this.authService.login(this.loginForm.controls.email.value, this.loginForm.controls.password.value).subscribe();
   }
 
   register(): void {
-    this.authService.register(this.registerForm.controls.email.value, this.registerForm.controls.password.value);
+    this.authService.register(this.registerForm.controls.email.value, this.registerForm.controls.password.value).subscribe();
   }
 }

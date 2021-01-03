@@ -21,7 +21,10 @@ userRoutes.post('/login', async (req, res, next) => {
                 if (error) return next(error);
 
                 const body = {_id: user._id, email: user.email}
-                const token = jwt.sign({user: body}, JWT_PRIVATE_KEY);
+                const token = jwt.sign({user: body}, JWT_PRIVATE_KEY, {
+                    algorithm: 'RS256',
+                    expiresIn: 21600
+                });
 
                 return res.json({message: 'Login successful', token});
             });
