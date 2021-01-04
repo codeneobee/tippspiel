@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
-import {AuthService} from '../../services/auth/auth.service';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +14,7 @@ export class LoginComponent implements OnInit {
   });
 
   registerForm = new FormGroup({
-    email:  new FormControl(''),
+    email: new FormControl(''),
     password: new FormControl('')
   });
   showRegisterForm = false;
@@ -22,13 +22,16 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private authService: AuthService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
   }
 
   login(): void {
-    this.authService.login(this.loginForm.controls.email.value, this.loginForm.controls.password.value).subscribe();
+    this.authService.login(this.loginForm.controls.email.value, this.loginForm.controls.password.value).subscribe((response) => {
+      localStorage.setItem('tp_jwt_token', response.token)
+    }, 
+    () => {});
   }
 
   register(): void {
