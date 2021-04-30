@@ -1,0 +1,26 @@
+{
+  "name": "tippspiel",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:backend": "npm run --prefix ./app start:test",
+    "watch:backend": "npm run --prefix ./app watch",
+    "start:frontend": "npm run --prefix ./frontend start",
+    "start": "concurrently npm:start:backend npm:start:frontend npm:watch:backend",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ddominnik/tippspiel.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ddominnik/tippspiel/issues"
+  },
+  "homepage": "https://github.com/ddominnik/tippspiel#readme",  
+  "devDependencies": {
+    "concurrently": "^6.0.2"
+  }
+}

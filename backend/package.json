@@ -6,7 +6,9 @@
   "scripts": {
     "watch": "tsc -w",
     "start:test": "DB_URL=mongodb://127.0.0.1/tippspiel-db nodemon build/app/server.js",
-    "test": "NODE_ENV=test jest"
+    "test": "NODE_ENV=test jest",
+    "prestart:test": "docker-compose up -d",
+    "poststart:test": "docker-compose down"
   },
   "author": "",
   "license": "ISC",
